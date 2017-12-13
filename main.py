@@ -6,7 +6,6 @@ from prettytable import PrettyTable
 def login(username, password):
     url = 'https://api.robinhood.com/api-token-auth/username'
     r = requests.post(url, data={'username':username, 'password':password})
-    print r.text
     if r.status_code == 200:
         print 'log in successful!'
         return r.json()['token']
@@ -20,10 +19,24 @@ def printHelp():
 
 def profile(token):
     url = 'https://api.robinhood.com/accounts/'
-#    r = requests.get(url, headers={'Authorization':'Token '+token})
- #   print r.text
     r = requests.get('https://api.robinhood.com/accounts/5SF74735/positions/', headers={'Authorization':'Token '+token})
-    print r.text
+    
+    # Gather all of the items with quantity over 0
+    holding = []
+    for res in r.json()['results']:
+        if float(res['quantity']) > 0:
+            holding.append(res)
+
+    table = PrettyTable(['stock', 'quantity', 'average price', 'current price', 'total price', 'gain'])
+    for h in holding:
+        symbol = requests.get(h['instrument']).json()['symbol']
+        quantity = float(h['quantity'])
+        avgPrice = float(h['average_buy_price'])
+        currPrice = float(requests.get('https://api.robinhood.com/quotes/'+symbol+'/').json()['last_trade_price'])
+        gain = currPrice * quantity - avgPrice * quantity
+        table.add_row([symbol, quantity, avgPrice, currPrice, quantity * currPrice, gain])
+
+    print table
 
 def quote(ticker):
     print "looking up " + ticker
@@ -38,8 +51,6 @@ def main():
     # password = getpass.getpass("password: ")
     password = raw_input("password: ")
     token = login(username, password)
-    
-    print("token entered: " + token)
 
     print("enter help for a list of commands")
     command = raw_input("command: ")
@@ -50,7 +61,10 @@ def main():
         elif command[0] == "profile" or command[0] == "p":
             profile(token)
         elif command[0] == "quote" or command[0] == "q":
-            quote(command[1].upper())
+            if len(command) == 2:
+                quote(command[1].upper())
+            else:
+                print 'ticker not given'
         elif command[0] == "quit":
             exit(0)
         command = raw_input("command: ")
