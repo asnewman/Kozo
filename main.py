@@ -1,6 +1,7 @@
 import requests
 import getpass
 import sys
+import time
 from prettytable import PrettyTable
 
 # logs in user and returns the user's token
@@ -20,11 +21,82 @@ def printHelp():
     print "profile, p - get information about currently held stocks"
     print "quote, q [symbol] - get information about a stock"
     print "buy, b [symbol] [amount] - purchase a stock at market price"
+    print "sell, s [symbol] [amount] - purchase a stock at market price"
+    print "tsl [symbol] [amount] [price difference] - start trailing stoploss for a stock"
+
 
 # buys a specified stock at market price
 def buy(token, symbol, amount):
+    instrument = get_instrument(symbol)
+
+    if instrument == None:
+        return
+
     url = 'https://api.robinhood.com/orders/'
-    r = request.get(url, headers={'Authorization':'Token '+token})
+    r = requests.post(url, headers={'Authorization':'Token '+token}, 
+        data={'symbol':symbol, 'type':'market', 'trigger':'immediate', 
+        'time_in_force':'gtc', 'quantity':amount, 'side':'buy', 'price':get_quote(symbol),
+        'instrument':instrument, 'account':'https://api.robinhood.com/accounts/5SF74735/'})
+    print r.text
+    print amount + ' ' + symbol + ' shares bought'
+
+# returns the symbols instrument url
+def get_instrument(symbol):
+    url = 'https://api.robinhood.com/instruments/'
+    r = requests.get(url, params={'symbol':symbol})
+
+    # make sure symbol exists in Robinhood
+    if len(r.json()['results']) == 0:
+        print symbol + ' not valid or available'
+        return None
+    else:
+        return r.json()['results'][0]['url']
+
+# sells a specified stock at market price
+def sell(token, symbol, amount):
+    instrument = get_instrument(symbol)
+
+    if instrument == None:
+        return
+
+    url = 'https://api.robinhood.com/orders/'
+    r = requests.post(url, headers={'Authorization':'Token '+token}, 
+        data={'symbol':symbol, 'type':'market', 'trigger':'immediate', 
+        'time_in_force':'gtc', 'quantity':amount, 'side':'sell', 'price':get_quote(symbol),
+        'instrument':instrument, 'account':'https://api.robinhood.com/accounts/5SF74735/'})
+    print r.text
+    print amount + ' ' + symbol + ' shares sold'
+
+# manually implements a trailing stop loss
+def trailing_stoploss(token, symbol, amount, price_diff):    
+    print 'Starting trailing stop loss for ' + symbol + ' will price difference of ' + str(price_diff)
+   
+    init_price = get_quote(symbol)
+    #init_price = get_test_quote(symbol)
+   
+    trail_price = init_price - price_diff
+    
+    curr_price = get_quote(symbol)
+    #curr_price = get_test_quote(symbol)
+
+
+    while curr_price > trail_price:
+        #curr_price = get_quote(symbol)
+        curr_price = get_test_quote(symbol)
+
+        print 'Initial price: ' + str(init_price)
+        print 'Current price: ' + str(curr_price)
+        print 'Trail price ' + str(trail_price)
+
+        if round(curr_price - trail_price, 2) > round(price_diff, 2):
+            trail_price = curr_price - price_diff
+            print 'Updating trail price'
+        print '----------------------'
+        time.sleep(5)
+
+    sell(token, symbol, amount)
+    #print 'Selling ' + symbol
+
 
 # prints the users profile (stocks held in the account)
 def profile(token):
@@ -60,8 +132,29 @@ def quote(ticker):
     url = "https://api.robinhood.com/quotes/"
     r = requests.get(url+ticker+'/')
     table = PrettyTable(['stock', 'price'])
-    table.add_row([ticker, r.json()['last_trade_price']])
+    table.add_row([ticker, get_quote(ticker)])
     print table
+
+# returns the price of the given ticker
+def get_quote(ticker):
+    url = "https://api.robinhood.com/quotes/"
+    r = requests.get(url+ticker+'/')
+    price = float(r.json()['last_trade_price'])
+    if price < 1:
+        return price
+    else:
+        return round(price, 2)
+
+# returns the price of the given ticker (used for testing while the market is closed)
+def get_test_quote(ticker):
+    url = "http://localhost:3000/prices"
+    r = requests.get(url)
+    price = float(r.json()['current'])
+    if price < 1:
+        return price
+    else:
+        return round(price, 2)
+
 
 def main():
     username = raw_input("username: ")
@@ -84,10 +177,22 @@ def main():
                 print 'ticker not given'
         elif command[0] == "buy" or command[0] =="b":
             if len(command) == 3:
-                buy(token, command[1], command[2])
+                buy(token, command[1].upper(), command[2])
             else:
                 print 'buy command must include and only include the ' 
                 + 'symbol and amount'
+        elif command[0] == "sell" or command[0] =="s":
+            if len(command) == 3:
+                sell(token, command[1].upper(), command[2])
+            else:
+                print 'sell command must include and only include the ' 
+                + 'symbol and amount'
+        elif command[0] == "tsl":
+            if len(command) == 4:
+                trailing_stoploss(token, command[1].upper(), command[2], float(command[3]))
+            else:
+                print 'tsl command must include and only include the ' 
+                + 'symbol, amount, and price difference'
         elif command[0] == "quit":
             exit(0)
         command = raw_input("command: ")
