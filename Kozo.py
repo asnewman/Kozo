@@ -156,7 +156,7 @@ class Kozo:
       r = requests.post(self.urls['order'], headers={'Authorization':'Token '+self.token}, 
          data={'symbol':symbol, 'type':'market', 'trigger':'immediate', 
          'time_in_force':'gtc', 'quantity':amount, 'side':'buy', 'price':self.get_quote(symbol),
-         'instrument':instrument, 'account':'https://api.robinhood.com/accounts/5SF74735/'})
+         'instrument':instrument, 'account':self.account_url})
       
       print amount + ' ' + symbol + ' shares bought'
 
@@ -171,7 +171,7 @@ class Kozo:
       r = requests.post(self.urls['order'], headers={'Authorization':'Token '+self.token}, 
          data={'symbol':symbol, 'type':'market', 'trigger':'immediate', 
          'time_in_force':'gtc', 'quantity':amount, 'side':'sell', 'price':self.get_quote(symbol),
-         'instrument':instrument, 'account':'https://api.robinhood.com/accounts/5SF74735/'})
+         'instrument':instrument, 'account':self.account_url})
 
       print str(amount) + ' ' + symbol + ' shares sold'
 
