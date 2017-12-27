@@ -19,9 +19,12 @@ class Kozo:
 
    # Starts and sets up the program
    def start(self):
-      self.username = raw_input('Username: ')
-      self.password = getpass.getpass('Password: ')
-      self.login()
+      # Loop until successful login
+      loggedin = False
+      while loggedin == False:
+         self.username = raw_input('Username: ')
+         self.password = getpass.getpass('Password: ')
+         loggedin = self.login()
       self.get_commands()
 
    # Gets commands from the user
@@ -170,7 +173,7 @@ class Kozo:
          'time_in_force':'gtc', 'quantity':amount, 'side':'sell', 'price':self.get_quote(symbol),
          'instrument':instrument, 'account':'https://api.robinhood.com/accounts/5SF74735/'})
 
-      print amount + ' ' + symbol + ' shares sold'
+      print str(amount) + ' ' + symbol + ' shares sold'
 
    # Returns the symbols instrument url
    def get_instrument(self, symbol):
@@ -215,7 +218,7 @@ class Kozo:
       while len(symbols) != 0:
          time.sleep(5)
          table = PrettyTable(['Symbol', 'Initial Price',
-            'Current Price', 'Trial Price'])
+            'Current Price', 'Trail Price'])
 
          # Get current prices for symbols
          cnt = 0
@@ -242,25 +245,6 @@ class Kozo:
             cnt += 1
 
          print table
-
-
-      # while curr_price > trail_price:
-      #    time.sleep(5)
-      #    curr_price = self.get_quote(symbol)
-      #    # curr_price = self.get_test_quote(symbol)
-
-      #    table = PrettyTable(['Stock', 'Initial Price', 
-      #    'Current Price', 'Trail Price'])
-
-      #    table.add_row([symbol, init_price, curr_price, trail_price])
-      #    print table
-
-      #    if round(curr_price - trail_price, 2) > round(price_diff, 2):
-      #       trail_price = curr_price - price_diff
-      #       print 'Updating trail price'
-
-      # self.sell(symbol, amount)
-      # # print 'Selling ' + symbol
 
    # Gets a lists of symbols, amounts, and price differences for 
    # trailing stoploss
