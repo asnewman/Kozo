@@ -238,8 +238,11 @@ class Kozo:
                self.sell(symbol, amounts[cnt])
                # print 'Selling ' + symbol
                symbols.pop(cnt)
+               init_prices.pop(cnt)
                curr_prices.pop(cnt)
                trail_prices.pop(cnt)
+               amounts.pop(cnt)
+               price_diffs.pop(cnt)
                break
 
             cnt += 1
