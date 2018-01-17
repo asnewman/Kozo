@@ -1,5 +1,4 @@
 import requests
-import getpass
 import time
 from prettytable import PrettyTable
 
@@ -18,60 +17,13 @@ class Kozo:
         'instrument': 'https://api.robinhood.com/instruments/'
     }
 
-    # Starts and sets up the program
-    def start(self):
-        # Loop until successful login
-        loggedin = False
-        while loggedin == False:
-            self.username = raw_input('Username: ')
-            self.password = getpass.getpass('Password: ')
-            loggedin = self.login()
-        self.get_commands()
+    # Setter for the username
+    def set_username(self, new_username):
+        self.username = new_username
 
-    # Gets commands from the user
-    def get_commands(self):
-        print("Enter 'help' for a list of commands")
-        command = raw_input("Command: ")
-        command = command.split()
-
-        while True:
-            if command[0] == "help":
-                self.print_help()
-            elif command[0] == "profile" or command[0] == "p":
-                self.profile()
-            elif command[0] == "quote" or command[0] == "q":
-                if len(command) == 2:
-                    self.quote(command[1].upper())
-                else:
-                    print 'ticker not given'
-            elif command[0] == "buy" or command[0] == "b":
-                if len(command) == 3:
-                    self.buy(command[1].upper(), command[2])
-                else:
-                    print 'buy command must include and only include the '
-                    + 'symbol and amount'
-            elif command[0] == "sell" or command[0] == "s":
-                if len(command) == 3:
-                    self.sell(command[1].upper(), command[2])
-                else:
-                    print 'sell command must include and only include the '
-                    + 'symbol and amount'
-            elif command[0] == "tsl":
-                self.multi_tsl()
-            elif command[0] == "quit":
-                exit(0)
-            command = raw_input("Command: ")
-            command = command.split()
-
-    # Prints all of the available commands
-    def print_help(self):
-        print ''
-        print 'profile, p - get information about currently held stocks'
-        print 'quote, q [symbol] - get information about a stock'
-        print 'buy, b [symbol] [amount] - purchase a stock at market price'
-        print 'sell, s [symbol] [amount] - purchase a stock at market price'
-        print 'tsl - start trailing stoploss for stocks'
-        print ''
+    # Setter for the password
+    def set_password(self, new_password):
+        self.password = new_password
 
     # Logs in user and sets the user's token
     # Returns True if the login is successful, otherwise false
@@ -281,7 +233,3 @@ class Kozo:
                 break
 
         self.trailing_stoploss(symbols, amounts, price_diffs)
-
-
-user = Kozo()
-user.start()
