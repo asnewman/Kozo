@@ -245,13 +245,14 @@ class Kozo:
                 table.add_row([symbol, init_prices[cnt], curr_prices[cnt],
                                trail_prices[cnt]])
 
-                if round(curr_prices[cnt] - trail_prices[cnt], 2) 
+                if round(curr_prices[cnt] - trail_prices[cnt], 2) \
                 > round(price_diffs[cnt], 2):
                     trail_prices[cnt] = curr_prices[cnt] - price_diffs[cnt]
                     print 'Updating ' + symbol + ' trail price'
 
                 if round(curr_prices[cnt], 2) <= round(trail_prices[cnt], 2):
-                    # print 'SELLING'
+                    print time.ctime()
+                    print table
                     self.sell(symbol, amounts[cnt])
                     # print 'Selling ' + symbol
                     symbols.pop(cnt)
@@ -263,8 +264,6 @@ class Kozo:
                     break
 
                 cnt += 1
-
-            print table
 
     # Gets a lists of symbols, amounts, and price differences for
     # trailing stoploss
