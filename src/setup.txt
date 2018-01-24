@@ -1,0 +1,4 @@
+-set time zone to PST
+-make sure crontab is up
+-set crontab to delete all tasks on friday 
+-set mail?

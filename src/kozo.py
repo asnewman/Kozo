@@ -1,5 +1,7 @@
 import requests
+import datetime
 import time
+from crontab import CronTab
 from prettytable import PrettyTable
 
 
@@ -233,3 +235,22 @@ class Kozo:
                 break
 
         self.trailing_stoploss(symbols, amounts, price_diffs)
+
+    # Schedules a buy order with a price constraint
+    def scheduled_buy(self, symbol, amount, price, direction):
+        cron = CronTab(user=True)
+        # only working for my directory
+        command = "python /home/ashley/Kozo/src/scheduled_buy.py " + str(self.username) + " " + \
+                  str(self.password) + " " + str(symbol) + " " + str(amount) + \
+                  " " + str(price) + " " + str(direction) + " > /home/ashley/Kozo/src/test.out"
+        job = cron.new(command=command)
+
+        # getting tomorrow's date
+        tomorrow = datetime.date.today() + datetime.timedelta(days=1)
+        job.minute.on(59)
+        job.hour.on(12)
+        job.day.on(tomorrow.day)
+        job.month.on(tomorrow.month)
+
+        cron.write()
+        print "Buy scheduled for 12:59PM PST"
