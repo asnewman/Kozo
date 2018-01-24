@@ -253,4 +253,5 @@ class Kozo:
         job.month.on(tomorrow.month)
 
         cron.write()
-        print "Buy scheduled for 12:59PM PST"
+        print "Buy scheduled for " + amount + " shares of " + symbol + \
+              " " + direction + " " + price + " at 12:59PM PST"
