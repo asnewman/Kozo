@@ -242,7 +242,7 @@ class Kozo:
         # only working for my directory
         command = "python /home/ashley/Kozo/src/scheduled_buy.py " + str(self.username) + " " + \
                   str(self.password) + " " + str(symbol) + " " + str(amount) + \
-                  " " + str(price) + " " + str(direction) + " > /home/ashley/Kozo/src/test.out"
+                  " " + str(price) + " " + str(direction) + " >> /home/ashley/Kozo/src/test.out"
         job = cron.new(command=command)
 
         # getting tomorrow's date
