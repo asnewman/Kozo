@@ -13,3 +13,4 @@ on other user's machines. This is done for development currently and will
 be fixed soon
 - The email notification for the scheduled buy is only printing to a local file.
 - Timezone for the local machine must be set to PST
+- Buy and sell market is only working about 70%. Investigating...
