@@ -44,8 +44,8 @@ def buy(user, args):
     elif args[6] == "below" and quote < float(args[5]):
         user.buy(args[3], args[4])
     else:
-        print 'Condition not met for ' + args[3] + ' at ' + args[5] + '.' \
-                + ' Current price is ' + str(quote) + '.'
+        print args[6] + ' condition not met for ' + args[3] + ' at ' + \
+            args[5] + '.' + ' Current price is ' + str(quote) + '.'
 
 def main():
     # Make sure the args are the correct length
