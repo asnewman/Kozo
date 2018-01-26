@@ -4,6 +4,7 @@ Kozo is an commandline extention of the stock broker Robinhood. Taking advantage
 - Trailing Stoploss
 - Time scheduled buys
 ## Features to Add
+- A sustainable testing model with a mock API
 - Trailing Stoploss to be independentally ran
 - Add email notification
 - Web UI
