@@ -1,3 +1,4 @@
 *.swp
 *.pyc
-test.out
+src/test.out
+src/setup.txt
