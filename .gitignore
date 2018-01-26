@@ -1,5 +1,5 @@
 *.swp
 *.pyc
-src/test.out
-src/setup.txt
+test.out
+setup.txt
 credentials.txt
