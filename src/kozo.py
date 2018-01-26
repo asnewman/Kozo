@@ -117,11 +117,14 @@ class Kozo:
                                 'time_in_force': 'gtc', 
                                 'quantity': amount, 
                                 'side': 'buy', 
-                                'price': self.get_quote(symbol),
+                                'price': round(self.get_quote(symbol) * 1.05, 2),
                                 'instrument': instrument, 
                                 'account': self.account_url})
 
-        print amount + ' ' + symbol + ' shares bought'
+        if r.status_code == 201:
+            print amount + ' ' + symbol + ' shares bought'
+        else:
+            print "error"
 
     # Sells a specified stock at market price
     def sell(self, symbol, amount):
@@ -139,11 +142,14 @@ class Kozo:
                                 'time_in_force': 'gtc', 
                                 'quantity': amount, 
                                 'side': 'sell', 
-                                'price': self.get_quote(symbol),
+                                'price': round(self.get_quote(symbol) * .95, 2),
                                 'instrument': instrument, 
                                 'account': self.account_url})
 
-        print str(amount) + ' ' + symbol + ' shares sold'
+        if r.status_code == 201:
+            print str(amount) + ' ' + symbol + ' shares sold'
+        else:
+            print "error"
 
     # Returns the symbols instrument url
     def get_instrument(self, symbol):
