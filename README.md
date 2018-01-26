@@ -14,3 +14,5 @@ be fixed soon
 - The email notification for the scheduled buy is only printing to a local file.
 - Timezone for the local machine must be set to PST
 - Buy and sell market is only working about 70%. Investigating...
+   - Edit: [Issue found here] (https://github.com/sanko/Robinhood/issues/11)
+fixing soon.
