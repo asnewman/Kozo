@@ -2,4 +2,4 @@
 *.pyc
 src/test.out
 src/setup.txt
-./credentials.txt
+credentials.txt
