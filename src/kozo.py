@@ -246,6 +246,7 @@ class Kozo:
     def scheduled_buy(self, symbol, amount, price, direction):
         cron = CronTab(user=True)
         # only working for my directory
+        # please change the directory path to be relevant for your system
         command = "python /home/ashley/Kozo/src/scheduled_buy.py " + str(self.username) + " " + \
                   str(self.password) + " " + str(symbol) + " " + str(amount) + \
                   " " + str(price) + " " + str(direction) + " >> /home/ashley/Kozo/src/test.out"

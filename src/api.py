@@ -21,6 +21,7 @@ class API:
         if test == True:
             self.baseUrl = 'http://localhost:5005/'
 
+    # Logs in user
     def login(self, username, password):
         return requests.post(self.urls['login'], data = {
                 'username': username,
