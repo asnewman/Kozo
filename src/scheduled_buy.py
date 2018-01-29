@@ -1,3 +1,7 @@
+# =============================================================================
+# Created by asnewman (Ashley Newman)
+# =============================================================================
+
 import sys
 from kozo import Kozo
 from resources import Resources
