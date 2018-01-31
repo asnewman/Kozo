@@ -4,10 +4,7 @@
 
 import unittest
 import sys
-
-sys.path.insert(0, '../src/')
-
-import scheduled_buy as sb
+import src.scheduled_buy as sb
 
 class TestScheduledBuy(unittest.TestCase):
     def test_good_args(self):

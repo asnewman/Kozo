@@ -5,15 +5,16 @@
 import unittest
 import sys
 
-sys.path.insert(0, '../src/')
-
-from api import API
+from src.api import API
 
 class TestAPI(unittest.TestCase):
-    def __init__(self):
-        with open('../credentials.txt', r) as f:
-            self.username = f[0]
-            self.password = f[1]
+    def setUp(self):
+        # Must have a file with valid Robinhood credentials
+        # Currently the account must not have MFA
+        with open('./tests/credentials.txt') as f:
+            data = f.readlines()
+            self.username = data[0]
+            self.password = data[1]
     
     def test_good_login(self):
         r = API().login(self.username, self.password)

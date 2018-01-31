@@ -24,6 +24,6 @@ class API:
     # Logs in user
     def login(self, username, password):
         return requests.post(self.urls['login'], data = {
-                'username': username,
+                'username': username, 
                 'password': password
-            }
+            })
