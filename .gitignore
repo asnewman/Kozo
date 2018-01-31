@@ -1,5 +1,5 @@
 *.swp
 *.pyc
-test.out
+scheduled_buy.log
 setup.txt
 credentials.txt

@@ -5,6 +5,7 @@
 import requests
 import datetime
 import time
+import os
 from crontab import CronTab
 from prettytable import PrettyTable
 
@@ -251,9 +252,11 @@ class Kozo:
         cron = CronTab(user=True)
         # only working for my directory
         # please change the directory path to be relevant for your system
-        command = "python /home/ashley/Kozo/src/scheduled_buy.py " + str(self.username) + " " + \
-                  str(self.password) + " " + str(symbol) + " " + str(amount) + \
-                  " " + str(price) + " " + str(direction) + " >> /home/ashley/Kozo/src/test.out"
+        command = "python " + os.path.dirname(os.path.realpath(__file__)) + \
+            "/scheduled_buy.py " + str(self.username) + " " + \
+            str(self.password) + " " + str(symbol) + " " + str(amount) + \
+            " " + str(price) + " " + str(direction) + " >> " + \
+            os.path.dirname(os.path.realpath(__file__)) + "/scheduled_buy.log"
         job = cron.new(command=command)
 
         # getting tomorrow's date
