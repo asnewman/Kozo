@@ -255,8 +255,9 @@ class Kozo:
         command = "python " + os.path.dirname(os.path.realpath(__file__)) + \
             "/scheduled_buy.py " + str(self.username) + " " + \
             str(self.password) + " " + str(symbol) + " " + str(amount) + \
-            " " + str(price) + " " + str(direction) + " >> " + \
-            os.path.dirname(os.path.realpath(__file__)) + "/scheduled_buy.log"
+            " " + str(price) + " " + str(direction) # \
+            # Going to send output to email for now, make sure sendmail is configured
+            # + " >> " + os.path.dirname(os.path.realpath(__file__)) + "/scheduled_buy.log"
         job = cron.new(command=command)
 
         # getting tomorrow's date
