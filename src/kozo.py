@@ -262,7 +262,7 @@ class Kozo:
         # getting tomorrow's date
         tomorrow = datetime.date.today() + datetime.timedelta(days=1)
         job.minute.on(59)
-        job.hour.on(12)
+        job.hour.on(15)
         job.day.on(tomorrow.day)
         job.month.on(tomorrow.month)
 
