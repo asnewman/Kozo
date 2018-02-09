@@ -8,9 +8,29 @@
 # 1. username
 # 2. password
 # =============================================================================
-
+import requests
 from kozo import Kozo
 from resources import Resources
+from api import API
+from datetime import datetime, time
+
+# Check to see if the market is open
+def check_market_open():
+    api = API()
+    links = api.market_hours()
+    
+    for link in links:
+        req = requests.get(link)
+        if req.json()["is_open"] == False:
+            return False
+
+    # Currently in PST
+    now_time = datetime.now().time()
+
+    if time(6,30) <= now_time <= time(13,00):
+        return True
+
+    return False
 
 # Validates data of an order
 # 1. Ticker (string)
