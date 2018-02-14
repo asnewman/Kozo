@@ -86,6 +86,7 @@ class Kozo:
 
     # Returns the price of the given ticker
     def get_quote(self, ticker):
+        ticker = ticker.upper()
         r = requests.get(self.urls['quote'] + ticker + '/')
         price = float(r.json()['last_trade_price'])
 
