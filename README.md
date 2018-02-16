@@ -5,11 +5,8 @@ Kozo is an commandline extention of the stock broker Robinhood. Taking advantage
 - Time scheduled buys
 ## Features to Add
 - A sustainable testing model with a mock API
-- Trailing Stoploss to be independentally ran
 - Add email notification
-- Web UI
 ## Current issues
-- The email notification for the scheduled buy is only printing to a local file (scheduled_buy.log).
 - Timezone for the local machine must be set to EST
 ## Installation and use
 This project, in its current state, is not setup for widespread use. If you do choose to run it either for curiousity, testing, or for monetary gain, know that it is far from being complete and needs more testing to be done (as well as refinement of features). Also, at the moment there is no user friendly way of installing and update the program. Thus, you will need some technical knowledge to run it. If you have any questions, please message me on [reddit](http://www.reddit.com/u/piratesearch).

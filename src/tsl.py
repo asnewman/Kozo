@@ -33,7 +33,7 @@ def tsl(path, user):
 
             # Check if need to sell
             if curr_price <= order["trailPrice"]:
-                user.sell(order["ticker"].upper, order["amount"])
+                user.sell(order["ticker"].upper(), order["amount"])
                 #print "tsl for " + order["ticker"] + " has sold"
             else:
                 if curr_price > order["trailPrice"] + order["trailDiff"]:
