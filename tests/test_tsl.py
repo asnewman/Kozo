@@ -56,7 +56,19 @@ class TestTSL(unittest.TestCase):
             tsl_file.write("amd 5 .20 11.30\n")
             tsl_file.write("nvda 2 .49 140.23")
 
-        expected = [["amd", 5, .20, 11.30], ["nvda", 2, .49, 140.23]]
+        expected = [
+                {
+                    "ticker": "amd",
+                    "amount": 5,
+                    "trailDiff": .20,
+                    "trailPrice": 11.30
+                },
+                {
+                    "ticker": "nvda",
+                    "amount": 2,
+                    "trailDiff": .49,
+                    "trailPrice": 140.23
+                }]
 
         self.assertEqual(tsl.get_orders(self.TEST_FILE), expected)
         
@@ -69,7 +81,13 @@ class TestTSL(unittest.TestCase):
             tsl_file.write("amd 5 .20 11.30\n")
             tsl_file.write("nvda two .49, 12.30")
 
-        expected = [["amd", 5, .20, 11.30]]
+        expected = [
+                {
+                    "ticker": "amd",
+                    "amount": 5,
+                    "trailDiff": .20,
+                    "trailPrice": 11.30
+                }]
 
         self.assertEqual(tsl.get_orders(self.TEST_FILE), expected)
 

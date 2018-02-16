@@ -65,7 +65,7 @@ class Resources:
                     print 'sell command must include and only include the '
                     + 'symbol and amount'
             elif command[0] == "tsl":
-                user.multi_tsl()
+                user.trailing_stoploss()
             elif command[0] == "sb":
                 if len(command) == 5:
                     user.scheduled_buy(command[1].upper(), command[2], \

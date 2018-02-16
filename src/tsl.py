@@ -33,8 +33,8 @@ def tsl(path, user):
 
             # Check if need to sell
             if curr_price <= order["trailPrice"]:
-                # user.sell(order["ticker"].upper, order["amount"])
-                print "tsl for " + order["ticker"] + " has sold"
+                user.sell(order["ticker"].upper, order["amount"])
+                #print "tsl for " + order["ticker"] + " has sold"
             else:
                 if curr_price > order["trailPrice"] + order["trailDiff"]:
                     order["trailPrice"] = curr_price - order["trailDiff"]
@@ -67,7 +67,7 @@ def check_market_open():
     # Currently in PST
     now_time = datetime.now().time()
 
-    if time(6,30) <= now_time <= time(11,46):
+    if time(6,30) <= now_time <= time(13,00):
         return True
 
     return False

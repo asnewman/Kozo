@@ -168,85 +168,25 @@ class Kozo:
         else:
             return r.json()['results'][0]['url']
 
-    # Manually implements a trailing stop loss
-    def trailing_stoploss(self, symbols, amounts, price_diffs):
-        print 'Starting trailing stop losses'
+    # Schdules trailing stoplosses by writing to orders.data
+    def trailing_stoploss(self):
+        path = "orders.data"
+        tsls = []
+        
 
-        init_prices = []
-        trail_prices = []
-        curr_prices = []
+        ticker = raw_input("Ticker: ").upper()
+        amount = raw_input("Amount: ")
+        trail_amount = raw_input("Trail Amount: ")
+        curr_trail = self.get_quote(ticker) - float(trail_amount)
 
-        print symbols
+        with open(path, "a") as orders_file:
+            orders_file.write(ticker + " " +\
+                              amount + " " +\
+                              trail_amount + " " +\
+                              str(curr_trail) + "\n")
 
-        # Getting initial prices for symbols
-        for symbol in symbols:
-            init_prices.append(self.get_quote(symbol))
-            # init_prices.append(self.get_test_quote(symbol))
-
-        # Getting trailing prices for symbols
-        cnt = 0
-        for symbol in symbols:
-            trail_prices.append(init_prices[cnt] - price_diffs[cnt])
-            cnt += 1
-
-        # Getting current prices for symbols
-        cnt = 0
-        for symbol in symbols:
-            curr_prices.append(self.get_quote(symbols[cnt]))
-            # curr_prices.append(self.get_test_quote(symbols[cnt]))
-            cnt += 1
-
-        # While there are symbols in the list
-        while len(symbols) != 0:
-            time.sleep(5)
-            table = PrettyTable(['Symbol', 'Initial Price',
-                                 'Current Price', 'Trail Price'])
-
-            # Get current prices for symbols
-            cnt = 0
-            for symbol in symbols:
-                curr_prices[cnt] = self.get_quote(symbol)
-                # curr_prices[cnt] = self.get_test_quote(symbol)
-
-                table.add_row([symbol, init_prices[cnt], curr_prices[cnt],
-                               trail_prices[cnt]])
-
-                if round(curr_prices[cnt] - trail_prices[cnt], 2) \
-                > round(price_diffs[cnt], 2):
-                    trail_prices[cnt] = curr_prices[cnt] - price_diffs[cnt]
-                    print 'Updating ' + symbol + ' trail price'
-
-                if round(curr_prices[cnt], 2) <= round(trail_prices[cnt], 2):
-                    print time.ctime()
-                    print table
-                    self.sell(symbol, amounts[cnt])
-                    # print 'Selling ' + symbol
-                    symbols.pop(cnt)
-                    init_prices.pop(cnt)
-                    curr_prices.pop(cnt)
-                    trail_prices.pop(cnt)
-                    amounts.pop(cnt)
-                    price_diffs.pop(cnt)
-                    break
-
-                cnt += 1
-
-    # Gets a lists of symbols, amounts, and price differences for
-    # trailing stoploss
-    def multi_tsl(self):
-        symbols = []
-        amounts = []
-        price_diffs = []
-
-        while True:
-            symbols.append((raw_input('Symbol: ')).upper())
-            amounts.append(float(raw_input('Amount: ')))
-            price_diffs.append(float(raw_input('Price Difference: ')))
-
-            if raw_input('Add more? [yes/no] ') != 'yes':
-                break
-
-        self.trailing_stoploss(symbols, amounts, price_diffs)
+        print "Trailing " + ticker + " of amount " + amount +\
+              " at a trail of " + trail_amount + "."
 
     # Schedules a buy order with a price constraint
     def scheduled_buy(self, symbol, amount, price, direction):
