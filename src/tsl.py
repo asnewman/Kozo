@@ -70,6 +70,7 @@ def check_market_open():
     if time(6,30) <= now_time <= time(13,00):
         return True
 
+    print "Market is closed"
     return False
 
 # Validates data of an order
