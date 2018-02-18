@@ -22,3 +22,4 @@ All items listed are subject to change (most likely on a day to day basis)
 - Ensure crontab is functional on the local machine
 ### Installation
 At the moment, the only way to install Kozo is through downloading the source code and manually running `run.py`. If you do not know how to do this, the program is not ready for you to use. Sorry!
+## The Strategy
