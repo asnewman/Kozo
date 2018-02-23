@@ -190,7 +190,7 @@ class Kozo:
 
     # Schedules a buy order with a price constraint
     def scheduled_buy(self):
-        symbol = raw_input("Symbol: ")
+        symbol = raw_input("Symbol: ").upper()
         amount = raw_input("Amount: ")
         price = raw_input("Price: ")
         direction = raw_input("Direction (above/below): ")
