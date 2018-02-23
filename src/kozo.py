@@ -189,7 +189,16 @@ class Kozo:
               " at a trail of " + trail_amount + "."
 
     # Schedules a buy order with a price constraint
-    def scheduled_buy(self, symbol, amount, price, direction):
+    def scheduled_buy(self):
+        symbol = raw_input("Symbol: ")
+        amount = raw_input("Amount: ")
+        price = raw_input("Price: ")
+        direction = raw_input("Direction (above/below): ")
+        date = raw_input("Date (mm/dd): ").split("/")
+
+        month = int(date[0])
+        day = int(date[1])
+
         cron = CronTab(user=True)
         # only working for my directory
         # please change the directory path to be relevant for your system
@@ -197,17 +206,14 @@ class Kozo:
             "/scheduled_buy.py " + str(self.username) + " " + \
             str(self.password) + " " + str(symbol) + " " + str(amount) + \
             " " + str(price) + " " + str(direction) # \
-            # Going to send output to email for now, make sure sendmail is configured
-            # + " >> " + os.path.dirname(os.path.realpath(__file__)) + "/scheduled_buy.log"
         job = cron.new(command=command)
 
-        # getting tomorrow's date
-        tomorrow = datetime.date.today() + datetime.timedelta(days=1)
         job.minute.on(59)
         job.hour.on(12)
-        job.day.on(tomorrow.day)
-        job.month.on(tomorrow.month)
+        job.day.on(day)
+        job.month.on(month)
 
         cron.write()
         print "Buy scheduled for " + amount + " shares of " + symbol + \
-              " " + direction + " " + price + " at 12:59PM PST"
+              " " + direction + " " + price + " at 12:59PM PST on " +\
+              str(month) + "/" + str(day)

@@ -32,7 +32,6 @@ class Resources:
         print 'sell, s [symbol] [amount] - purchase a stock at market price'
         print 'tsl - start trailing stoploss for stocks'
         print 'sb - schedules a buy at 12:59pm PST the next day with price condition'
-        print '     [symbol] [amount] [price] [direction - above|below]'
         print ''
         
     # Gets commands from the user
@@ -67,11 +66,7 @@ class Resources:
             elif command[0] == "tsl":
                 user.trailing_stoploss()
             elif command[0] == "sb":
-                if len(command) == 5:
-                    user.scheduled_buy(command[1].upper(), command[2], \
-                            command[3], command[4])
-                else:
-                    print "sb must have only 5 arguements"
+                user.scheduled_buy()
             elif command[0] == "quit":
                 exit(0)
             command = raw_input("Command: ")
